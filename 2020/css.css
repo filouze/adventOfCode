@@ -1,0 +1,16 @@
+body {
+    background-color: black;
+}
+
+.divC{
+    margin-top:50vh;
+    transform: translateY(-50%);
+    font-family: Monospace;
+}
+
+.divC div {
+    color: gray;
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 1em;
+}

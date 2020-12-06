@@ -482,16 +482,33 @@
         'vpwoatuybsjkri.wmeujzd.zdjuxw'
     ];
     const alpha = "abcdefghijklmnopqrstuvwxyz";
+
+    const isInEachOthers = (value, others) => others.reduce((a,c) => c.indexOf(value) !== -1 ? a && true:false,true);
+
     window.onload = function () {
-        console.log('day6.js');
-        let p1 = 0;
-        let p2 = 0;
-        let yesAnswers = [];
+
+        const dayId = document.scripts[document.scripts.length-1].src.split('/').pop().replace('day','').replace('.js','');
+        const dayFile = document.getElementById('dayFile');
+        const dayLink = document.getElementById('dayLink');
+        dayFile.append(dayId);
+        dayLink.append(dayId);
+        dayLink.href = dayLink.href + dayId;
+
+        let anyOne = [];
+        let everyOne = [];
         for (let g=0; g<forms.length; ++g) {
             let aS = alpha.split('');
-            yesAnswers.push(aS.reduce((a,c) => forms[g].indexOf(c) !== -1 ? a + 1:a,0));
+            anyOne.push(aS.reduce((a,c) => forms[g].indexOf(c) !== -1 ? a + 1:a,0));
+            let lineSplit = forms[g].split('.');
+            const firstOne = lineSplit.shift().split('');
+            if (!lineSplit.length){
+                everyOne.push(firstOne.length);
+            } else {
+                const each = firstOne.reduce((a, c) => isInEachOthers(c, lineSplit) ? a + 1 : a, 0);
+                everyOne.push(each);
+            }
         }
-        console.log('Part 1 : ' + yesAnswers.reduce((a,c)=> a+c));
-        console.log('Part 2 : ' + p2);
+        document.getElementById('part1').innerText = anyOne.reduce((a,c)=> a+c,0);
+        document.getElementById('part2').innerText = everyOne.reduce((a,c)=> a+c,0);
     };
 })();
