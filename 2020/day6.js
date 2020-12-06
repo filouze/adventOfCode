@@ -486,14 +486,7 @@
     const isInEachOthers = (value, others) => others.reduce((a,c) => c.indexOf(value) !== -1 ? a && true:false,true);
 
     window.onload = function () {
-
-        const dayId = document.scripts[document.scripts.length-1].src.split('/').pop().replace('day','').replace('.js','');
-        const dayFile = document.getElementById('dayFile');
-        const dayLink = document.getElementById('dayLink');
-        dayFile.append(dayId);
-        dayLink.append(dayId);
-        dayLink.href = dayLink.href + dayId;
-
+        init();
         let anyOne = [];
         let everyOne = [];
         for (let g=0; g<forms.length; ++g) {
@@ -508,7 +501,7 @@
                 everyOne.push(each);
             }
         }
-        document.getElementById('part1').innerText = anyOne.reduce((a,c)=> a+c,0);
-        document.getElementById('part2').innerText = everyOne.reduce((a,c)=> a+c,0);
+        displayPart1(anyOne.reduce((a,c)=> a+c,0))
+        displayPart2(everyOne.reduce((a,c)=> a+c,0))
     };
 })();

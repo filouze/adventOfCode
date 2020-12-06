@@ -1,5 +1,4 @@
 ;(function () {
-    const passportCredentials = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid', 'cid'];
     const northPoleCredentials = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid'];
     const t = [
         'pid:827837505 byr:1976 hgt:187cm iyr:2016 hcl:#fffffd eyr:2024',
@@ -275,32 +274,35 @@
     const eclIsValid = ecl => ['amb','blu','brn','gry','grn','hzl','oth'].indexOf(ecl) !== -1;
     const pidIsValid = pid => pid.length === 9 && pid.match(/[0-9]{9}/g);
     window.onload = function () {
-        console.log('day4.js');
-        let passport = 0;
-        let northPole = 0;
+        init();
+        let p1 = 0;
+        let p2 = 0;
         for (let i = 0; i < t.length; ++i) {
             const line = t[i];
-            console.log(line);
-            let npC = [];
+            let npC1 = [];
+            let npC2 = [];
             for (let l = 0; l < northPoleCredentials.length; ++l) {
                 if (line.indexOf(northPoleCredentials[l] + ':') !== -1) {
+                    npC1.push(northPoleCredentials[l]);
                     let value = line.split(northPoleCredentials[l]+':')[1].split(' ')[0];
-                    if (northPoleCredentials[l] === 'byr' && byrIsValid(value)) npC.push(northPoleCredentials[l]);
-                    if (northPoleCredentials[l] === 'iyr' && iyrIsValid(value)) npC.push(northPoleCredentials[l]);
-                    if (northPoleCredentials[l] === 'eyr' && eyrIsValid(value)) npC.push(northPoleCredentials[l]);
-                    if (northPoleCredentials[l] === 'hgt' && hgtIsValid(value)) npC.push(northPoleCredentials[l]);
-                    if (northPoleCredentials[l] === 'hcl' && hclIsValid(value)) npC.push(northPoleCredentials[l]);
-                    if (northPoleCredentials[l] === 'ecl' && eclIsValid(value)) npC.push(northPoleCredentials[l]);
-                    if (northPoleCredentials[l] === 'pid' && pidIsValid(value)) npC.push(northPoleCredentials[l]);
+                    if (northPoleCredentials[l] === 'byr' && byrIsValid(value)) npC2.push(northPoleCredentials[l]);
+                    if (northPoleCredentials[l] === 'iyr' && iyrIsValid(value)) npC2.push(northPoleCredentials[l]);
+                    if (northPoleCredentials[l] === 'eyr' && eyrIsValid(value)) npC2.push(northPoleCredentials[l]);
+                    if (northPoleCredentials[l] === 'hgt' && hgtIsValid(value)) npC2.push(northPoleCredentials[l]);
+                    if (northPoleCredentials[l] === 'hcl' && hclIsValid(value)) npC2.push(northPoleCredentials[l]);
+                    if (northPoleCredentials[l] === 'ecl' && eclIsValid(value)) npC2.push(northPoleCredentials[l]);
+                    if (northPoleCredentials[l] === 'pid' && pidIsValid(value)) npC2.push(northPoleCredentials[l]);
                 }
             }
-            console.log(npC);
-            if (npC.length === northPoleCredentials.length) {
-                ++northPole;
+            if (npC1.length === northPoleCredentials.length) {
+                ++p1;
+            }
+            if (npC2.length === northPoleCredentials.length) {
+                ++p2;
             }
         }
-        console.log('passport : ' + passport);
-        console.log('northPole : ' + northPole);
-        console.log('Part 1 : ' + northPole);
+        displayPart1(p1);
+        displayPart2(p2);
+
     };
 })();

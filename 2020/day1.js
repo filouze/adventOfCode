@@ -202,13 +202,22 @@
         1741
     ];
     window.onload = function () {
+        init();
+        let p1, p2;
         for(let i=0;i < tab.length - 1;i++){
             for(let j=0;j < tab.length - 1;j++) {
+                if (tab[j] + tab[i] === 2020) {
+                    p1 = tab[j]*tab[i];
+                }
                 for(let k=0;k < tab.length - 1;k++) {
-                    if (tab[j] + tab[i] + tab[k] === 2020) console.log(tab[j]*tab[i]*tab[k]);
+                    if (tab[j] + tab[i] + tab[k] === 2020) {
+                        p2 = tab[j]*tab[i]*tab[k];
+                    }
                 }
             }
         }
+        displayPart1(p1);
+        displayPart2(p2);
     };
 
 })();

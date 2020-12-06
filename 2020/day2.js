@@ -1002,7 +1002,7 @@
     ,"8-9 w: wwwwwwwxww                    "
     ];
     window.onload = function () {
-        console.log('day2.js');
+        init();
         let r = 0;
         let s = 0;
         for(let i=0;i < tab.length;i++){
@@ -1021,8 +1021,8 @@
                 ++s;
             }
         }
-        console.log("Part 1 : "+r);
-        console.log("Part 2 : "+s);
+        displayPart1(r);
+        displayPart2(s);
     };
 
 })();

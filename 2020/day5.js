@@ -811,14 +811,7 @@
         ,"FBFFFFBRRL"
     ];
     window.onload = function () {
-
-        const dayId = document.scripts[document.scripts.length-1].src.split('/').pop().replace('day','').replace('.js','');
-        const dayFile = document.getElementById('dayFile');
-        const dayLink = document.getElementById('dayLink');
-        dayFile.append(dayId);
-        dayLink.append(dayId);
-        dayLink.href = dayLink.href + dayId;
-
+        init();
         let p1 = 0;
         let p2 = 0;
         let seatIds = [];
@@ -839,7 +832,7 @@
                 p2 = sortedSeatIds[s]-1;
             }
         }
-        document.getElementById('part1').innerText = p1;
-        document.getElementById('part2').innerText = p2;
+        displayPart1(p1);
+        displayPart2(p2);
     };
 })();

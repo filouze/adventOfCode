@@ -332,25 +332,25 @@
         , '......##.###..##.#.###......#.#'
     ];
     window.onload = function () {
-        console.log('day3.js');
+        init();
         let p2 = 1;
         const xLength = t[0].length;
         const yLength = t.length;
-        console.log(xLength, yLength);
         for (let s=0; s<slopes.length; ++s) {
             let trees = 0;
             let x = 0;
             let y = 0;
-            while (y < yLength - 1) {
+            while (y < yLength) {
                 if (t[y][x] === '#') ++trees;
-                console.log(x, y, t[y][x], trees)
                 x = (x + slopes[s][0]) % xLength;
                 y = y + slopes[s][1];
             }
-            console.log('Part 1 : ' + trees);
+            if (s===1) {
+                displayPart1(trees);
+            }
             p2 = p2 * trees;
         }
-        console.log('Part 2 : ' + p2);
+        displayPart2(p2);
     };
 
 })();
