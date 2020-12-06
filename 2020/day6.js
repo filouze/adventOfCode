@@ -481,12 +481,13 @@
         'iamkhc.isojneh',
         'vpwoatuybsjkri.wmeujzd.zdjuxw'
     ];
+
     const alpha = "abcdefghijklmnopqrstuvwxyz";
 
     const isInEachOthers = (value, others) => others.reduce((a,c) => c.indexOf(value) !== -1 ? a && true:false,true);
 
-    window.onload = function () {
-        init();
+    const puzzleSolving = (puzzleInput) => {
+        console.log(puzzleInput.length);
         let anyOne = [];
         let everyOne = [];
         for (let g=0; g<forms.length; ++g) {
@@ -504,4 +505,16 @@
         displayPart1(anyOne.reduce((a,c)=> a+c,0))
         displayPart2(everyOne.reduce((a,c)=> a+c,0))
     };
+
+    window.onload = function () {
+        init().addEventListener('change', function selectedFileChanged() {
+            const reader = new FileReader();
+            reader.onload = function fileReadCompleted() {
+                console.log('fileReadCompleted - ' + reader.result.length + ' lines read');
+                puzzleSolving(reader.result);
+            };
+            reader.readAsText(this.files[0])
+        });
+    }
+
 })();

@@ -6,6 +6,7 @@ const init = () => {
     dayFile.append(dayId);
     dayLink.append(dayId);
     dayLink.href = dayLink.href + dayId;
+    return document.getElementById('puzzle');
 };
 const displayPart = (part, result) => document.getElementById('part' + part).innerText = '#part' + part + ' : ' + result;
 const displayPart1 = result => result ? displayPart(1, result) : undefined;
