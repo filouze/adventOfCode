@@ -1,44 +1,56 @@
 ;(function () {
-    const getColorRulesForThisColor = (colors, puzzleInputRules) => {
+    const part1 = (colors, puzzleInputRules) => {
         let colorsAlreadyCount = [];
         let c = 0;
         while (colors.length) {
-            // console.log(colors);
             let color = colors.shift();
-            // console.log("color : "+color);
             colorsAlreadyCount.push(color);
             for (let r = 0; r < puzzleInputRules.length; ++r) {
                 const containSplit = puzzleInputRules[r].split(' bags contain');
                 if (containSplit[1].indexOf(color) !== -1) {
-                    if(colorsAlreadyCount.indexOf(containSplit[0]) === -1 && colors.indexOf(containSplit[0]) === -1){
-                        // console.log(containSplit[0],containSplit[1]);
+                    if (colorsAlreadyCount.indexOf(containSplit[0]) === -1 && colors.indexOf(containSplit[0]) === -1) {
                         colors.push(containSplit[0]);
                         ++c;
                     }
                 }
             }
         }
-        // console.log(colorsAlreadyCount);
         return c;
-    }
+    };
+
+    const part2 = (colors, puzzleInputRules) => {
+        let c = 0;
+        while (colors.length) {
+            let color = colors.shift();
+            for (let r = 0; r < puzzleInputRules.length; ++r) {
+                const containSplit = puzzleInputRules[r].split(' bags contain ');
+                if (containSplit[0].indexOf(color) !== -1) {
+                    let right = containSplit[1].replace(/(bag)/g, '').split(',');
+                    for (let s = 0; s < right.length; ++s) {
+                        let rSplit = right[s].split(' ');
+                        if (rSplit.length === 5) {
+                            rSplit.shift();
+                        }
+                        const n = parseInt(rSplit.shift(), 10);
+                        const ab = rSplit.shift() + ' ' + rSplit.shift();
+                        for (let i = 0; i < n; ++i) {
+                            ++c
+                            colors.push(ab);
+                        }
+                    }
+                }
+            }
+        }
+        return c;
+    };
 
     const puzzleSolving = (puzzleInput) => {
-        const puzzleInputRules = puzzleInput.replace(/\n/g, "_").split("_");
-        // const tuRules = [
-        //     "light red bags contain 1 bright white bag, 2 muted yellow bags.",
-        //     "dark orange bags contain 3 bright white bags, 4 muted yellow bags.",
-        //     "bright white bags contain 1 shiny gold bag.",
-        //     "muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.",
-        //     "shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.",
-        //     "dark olive bags contain 3 faded blue bags, 4 dotted black bags.",
-        //     "vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.",
-        //     "faded blue bags contain no other bags.",
-        //     "dotted black bags contain no other bags."
-        // ];
-        let p1 = getColorRulesForThisColor(['shiny gold'], puzzleInputRules);
-        displayPart1(p1)
-        displayPart2(null)
-    }
+        const puzzleInputRules = puzzleInput.replace(/\n/g, '_').split('_');
+        let p1 = part1(['shiny gold'], puzzleInputRules);
+        let p2 = part2(['shiny gold'], puzzleInputRules);
+        displayPart1(p1);
+        displayPart2(p2);
+    };
 
     window.onload = function () {
         init().addEventListener('change', function selectedFileChanged() {
@@ -47,7 +59,7 @@
                 console.log('fileReadCompleted - ' + reader.result.length + ' characters read');
                 puzzleSolving(reader.result);
             };
-            reader.readAsText(this.files[0])
+            reader.readAsText(this.files[0]);
         });
-    }
+    };
 })();
