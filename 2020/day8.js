@@ -70,7 +70,6 @@
                 puzzleInputUpdated[i] = instruction;
             }
         }
-        return 'shit';
     }
 
     const puzzleSolving = (puzzleInput) => {
