@@ -2,7 +2,7 @@ const fs = require("fs");
 const isE = s => s === 'L';
 const isO = s => s === '#';
 const isASeat = s => isO(s) || isE(s);
-const isIn = (x,y,xL,yL) => x>0 && y>0 && x<xL && y<yL;
+const isIn = (x,y,xL,yL) => x>=0 && y>=0 && x<=xL && y<=yL;
 
 const getAdjacents = (x,y,puzzle) => {
     let a = [];
@@ -24,10 +24,11 @@ const getFirstInThisDir = (x,y,xa,ya,puzzle) => {
     const xL = puzzle[0].length - 1;
     let a = x;
     let b = y;
-    while (!isASeat(puzzle[b][a]) && isIn(a,b,xL,yL)) {
+    while (isIn(a+xa,b+ya,xL,yL)) {
         a = a + xa;
         b = b + ya;
         let seat = puzzle[b][a];
+
         if (isASeat(seat)) return seat;
     }
     return '.';
@@ -35,14 +36,14 @@ const getFirstInThisDir = (x,y,xa,ya,puzzle) => {
 
 const getFirstSeats = (x,y,puzzle) => {
     let a = [];
-    a.push(getFirstInThisDir(x,y,-1,0,puzzle));
-    a.push(getFirstInThisDir(x,y,-1,-1,puzzle));
-    a.push(getFirstInThisDir(x,y,0,-1,puzzle));
-    a.push(getFirstInThisDir(x,y,1,-1,puzzle));
-    a.push(getFirstInThisDir(x,y,1,0,puzzle));
-    a.push(getFirstInThisDir(x,y,1,1,puzzle));
-    a.push(getFirstInThisDir(x,y,0,1,puzzle));
-    a.push(getFirstInThisDir(x,y,-1,1,puzzle));
+    a.push(getFirstInThisDir(x,y,-1,0,puzzle));  //1
+    a.push(getFirstInThisDir(x,y,-1,-1,puzzle)); //2
+    a.push(getFirstInThisDir(x,y,0,-1,puzzle));  //3
+    a.push(getFirstInThisDir(x,y,1,-1,puzzle));  //4
+    a.push(getFirstInThisDir(x,y,1,0,puzzle));   //5
+    a.push(getFirstInThisDir(x,y,1,1,puzzle));   //6
+    a.push(getFirstInThisDir(x,y,0,1,puzzle));   //7
+    a.push(getFirstInThisDir(x,y,-1,1,puzzle));  //8
     return a;
 }
 
@@ -52,7 +53,6 @@ const countOccupiedSeats = (p) => {
     const yL = p.length;
     let count = 0;
     for (let y = 0; y < yL; ++y) {
-        console.log(p[y], p[y].split('').reduce(countOccupiedByLine, 0))
         count = count + p[y].split('').reduce(countOccupiedByLine, 0)
     }
     return count;
@@ -90,6 +90,8 @@ fs.readFile(process.argv[2], "utf8", function (err, contents) {
     console.log('#part1 = '+countOccupiedSeats(puzzle));
 
     updates = 1;
+    puzzle = contents.split("\n");
+
     while(updates > 0) {
         updates = 0;
         newPuzzle = [];
@@ -97,7 +99,6 @@ fs.readFile(process.argv[2], "utf8", function (err, contents) {
             let newLine = puzzle[y].split('');
             for (let x = 0; x < xL; ++x) {
                 let adj = getFirstSeats(x, y, puzzle);
-                console.log(adj.join(''))
                 const seat = puzzle[y][x];
                 if (isE(seat) && adj.join('').indexOf('#') === -1) {
                     newLine[x] = '#';
