@@ -27,6 +27,6 @@ fs.readFile(process.argv[2], "utf8", function (err, contents) {
     let puzzle = contents.split("\n");
     const t = puzzle.shift();
     let b = puzzle.shift().split(',');
-g    console.log('#part1 = '+part1(t,b));
+    console.log('#part1 = '+part1(t,b));
     console.log('#part2 = '+part2(b));
 });
