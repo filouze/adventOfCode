@@ -31,9 +31,7 @@ const getMap = (txt) => {
     return map
 }
 
-const getNewPath = (inputs, maps) => {
-    const newPath = []
-    inputs.forEach((input) => {
+const getSeedLocation = (input, maps) => {
         const i = Number.parseInt(input, 10)
         let path = input
         maps.forEach((map) => {
@@ -46,9 +44,7 @@ const getNewPath = (inputs, maps) => {
                 path = (i - rangeSrc + rangeDes).toString()
             }
         })
-        newPath.push(path)
-    })
-    return newPath
+    return path
 }
 
 fs.readFile(process.argv[2], "utf8", function (err, contents) {
@@ -57,21 +53,20 @@ fs.readFile(process.argv[2], "utf8", function (err, contents) {
     let sum2 = 0
     const seeds = getSeeds(pi.shift());
     pi.shift()
-    pi.forEach((l) => {
-        //console.log(l)
+    minLocation = ""
+    let seedLocation = 0
+    seeds.forEach((seed) => {
+        let src = seed
+        for (let i = 0; i < maps.length - 1; i++) {
+            const mapWording = getMapWording(i)
+            const textMap = getTextMap(mapWording, pi)
+            seedLocation = getSeedLocation(src, textMap)
+            src = seedLocation
+            //console.log(seed, seedLocation)
+        }
+        if (minLocation === "")                 minLocation = Number.parseInt(seedLocation)
+        else if (seedLocation < minLocation)    minLocation = Number.parseInt(seedLocation)
     })
-    let path = []
-    path.push(seeds)
-    //console.log(seeds)
-    for (let i = 0; i < maps.length - 1; i++) {
-        const mapWording = getMapWording(i)
-        const textMap = getTextMap(mapWording, pi)
-        // const map = getMap(textMap)
-        const newPath = getNewPath(path[i], textMap)
-        path.push(newPath)
-        //console.log(mapWording, textMap, newPath)
-    }
-    //console.log(seeds, path)
-    console.log("Answer #1 : " + Math.min(...path.pop()))
+    console.log("Answer #1 : " + minLocation)
     console.log("Answer #2 : " + sum2)
 });
