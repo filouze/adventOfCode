@@ -2,7 +2,7 @@ const fs = require("fs");
 
 const maps = ["seed","soil","fertilizer","water","light","temperature","humidity","location"]
 
-const getSeeds = (l) => l.split(':')[1].split(' ').filter((z) => z.length > 0)
+//const getSeeds = (l) => l.split(':')[1].split(' ').filter((z) => z.length > 0)
 
 const getMapWording = (i) => maps[i] + "-to-" + maps[i+1] + " map:"
 
@@ -44,29 +44,35 @@ const getSeedLocation = (input, maps) => {
                 path = (i - rangeSrc + rangeDes).toString()
             }
         })
-    return path
+    return Number.parseInt(path,10)
 }
 
 fs.readFile(process.argv[2], "utf8", function (err, contents) {
     let pi = contents.split('\n')
     let sum1 = 0
     let sum2 = 0
-    const seeds = getSeeds(pi.shift());
+    const seedsTxt = pi.shift();
+    const seeds = seedsTxt.split(':')[1].split(' ').filter((z) => z.length > 0)
     pi.shift()
     minLocation = ""
     let seedLocation = 0
-    seeds.forEach((seed) => {
-        let src = seed
-        for (let i = 0; i < maps.length - 1; i++) {
-            const mapWording = getMapWording(i)
-            const textMap = getTextMap(mapWording, pi)
-            seedLocation = getSeedLocation(src, textMap)
-            src = seedLocation
-            //console.log(seed, seedLocation)
+    //seeds.forEach((seed) => {
+    for (let i = 0; i < seeds.length; i = i + 2) {
+        const seedStart = Number.parseInt(seeds[i])
+        const seedRange = Number.parseInt(seeds[i+1])
+        for (let j = seedStart; j < seedStart + seedRange; j++) {
+            console.log(seedStart, seedRange, j)
+            let src = j
+            for (let m = 0; m < maps.length - 1; m++) {
+                const mapWording = getMapWording(m)
+                const textMap = getTextMap(mapWording, pi)
+                seedLocation = getSeedLocation(src, textMap)
+                src = seedLocation
+            }
+            if (minLocation === "")                 minLocation = Number.parseInt(seedLocation)
+            else if (seedLocation < minLocation)    minLocation = Number.parseInt(seedLocation)
+            //console.log(seedStart, src, minLocation)
         }
-        if (minLocation === "")                 minLocation = Number.parseInt(seedLocation)
-        else if (seedLocation < minLocation)    minLocation = Number.parseInt(seedLocation)
-    })
-    console.log("Answer #1 : " + minLocation)
-    console.log("Answer #2 : " + sum2)
+    }
+    console.log("Answer : " + minLocation)
 });
